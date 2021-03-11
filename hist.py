@@ -8,8 +8,8 @@ from bokeh.layouts import column, row, WidgetBox
 from bokeh.models import Panel
 import pandas as pd
 
-def hist_tab(data):
 
+def hist_tab(data):
     def md(s_data, rs=-60, re=120, bin=10):
         d = pd.DataFrame(columns=['proportion', 'left', 'right', 'f_proportoin', 'f_interval', 'name', 'color'])
         r = re - rs
@@ -20,7 +20,8 @@ def hist_tab(data):
                 'proportion': arr_hist / np.sum(arr_hist), 'left': edge[:-1], 'right': edge[1:]
             })
             arr_df['f_proportoin'] = ['%0.5f' % p for p in arr_df['proportion']]
-            arr_df['f_interval'] = ['%d to %d minutes' % (left, right) for left, right in zip(arr_df['left'], arr_df['right'])]
+            arr_df['f_interval'] = ['%d to %d minutes' % (left, right) for left, right in
+                                    zip(arr_df['left'], arr_df['right'])]
             arr_df['name'] = r_data
             arr_df['color'] = Category20_16[i]
             d = d.append(arr_df)
@@ -30,16 +31,14 @@ def hist_tab(data):
 
     def mp(s_data):
         p = figure(plot_width=700, plot_height=700, title='تاخیر در پرواز')
-        p.quad(source=s_data, bottom=0, top='proportion', left='left', right='right', color='color', fill_alpha=0.7, legend='name')
+        p.quad(source=s_data, bottom=0, top='proportion', left='left', right='right', color='color', fill_alpha=0.7,
+               legend='name')
         return p
 
     def update(attr, old, new):
         air_lines_checked = [chbox.labels[i] for i in chbox.active]
         ds = md(air_lines_checked, range_slider.value[0], range_slider.value[1], slider.value)
         src.data.update(ds.data)
-
-
-
 
     air_lines = list(set(data['name']))
     air_lines.sort()
